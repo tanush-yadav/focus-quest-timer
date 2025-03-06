@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Check, Target, Brain, RotateCw } from "lucide-react";
+import { Check, Target, Brain, RotateCw, ArrowRight } from "lucide-react";
 
 // Types of focus exercises
 const EXERCISE_TYPES = [
@@ -83,31 +82,25 @@ const FocusExercise = ({ isPaused, currentExercise, onComplete }: FocusExerciseP
     return () => clearInterval(interval);
   }, [targetPosition, isPaused, isCompleted]);
 
-  // Reset when moving to a new exercise
-  useEffect(() => {
-    if (isCompleted && !isPaused) {
-      const timer = setTimeout(() => {
-        const nextIndex = exerciseIndex + 1;
-        
-        if (nextIndex < EXERCISE_TYPES.length) {
-          setExerciseIndex(nextIndex);
-          setTimeLeft(EXERCISE_TYPES[nextIndex].durationSeconds);
-          setIsCompleted(false);
-          setTargetPosition({ x: 50, y: 50 });
-          setDistractions(Array.from({ length: 5 }, (_, i) => ({
-            id: i,
-            x: Math.random() * 80 + 10,
-            y: Math.random() * 80 + 10
-          })));
-        } else {
-          // Call onComplete to signal that all exercises are done
-          onComplete();
-        }
-      }, 2000);
-      
-      return () => clearTimeout(timer);
+  // Handle next exercise button click
+  const handleNextExercise = () => {
+    const nextIndex = exerciseIndex + 1;
+    
+    if (nextIndex < EXERCISE_TYPES.length) {
+      setExerciseIndex(nextIndex);
+      setTimeLeft(EXERCISE_TYPES[nextIndex].durationSeconds);
+      setIsCompleted(false);
+      setTargetPosition({ x: 50, y: 50 });
+      setDistractions(Array.from({ length: 5 }, (_, i) => ({
+        id: i,
+        x: Math.random() * 80 + 10,
+        y: Math.random() * 80 + 10
+      })));
+    } else {
+      // Call onComplete to signal that all exercises are done
+      onComplete();
     }
-  }, [isCompleted, exerciseIndex, isPaused, onComplete]);
+  };
 
   // Current exercise data
   const currentExerciseData = EXERCISE_TYPES[exerciseIndex];
@@ -156,7 +149,31 @@ const FocusExercise = ({ isPaused, currentExercise, onComplete }: FocusExerciseP
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-3">
                 <Check className="h-8 w-8 text-green-600" />
               </div>
-              <p className="text-lg font-medium">Exercise Complete!</p>
+              <p className="text-lg font-medium mb-6">Exercise Complete!</p>
+              
+              {/* Next Exercise Button */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                <Button 
+                  onClick={handleNextExercise} 
+                  className="px-6 py-2 flex items-center gap-2"
+                >
+                  {exerciseIndex < EXERCISE_TYPES.length - 1 ? (
+                    <>
+                      <span>Next Exercise</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  ) : (
+                    <>
+                      <span>Complete All Exercises</span>
+                      <Check className="h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              </motion.div>
             </motion.div>
           </motion.div>
         ) : (
