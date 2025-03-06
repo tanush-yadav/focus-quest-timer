@@ -69,6 +69,18 @@ const Session = () => {
     }
   };
 
+  const handleExerciseComplete = () => {
+    // Increment the current exercise index
+    setCurrentExercise(prev => {
+      const next = prev + 1;
+      // If we've completed all exercises, move to the quiz
+      if (next >= 3) { // Assuming there are 3 exercises
+        switchToQuiz();
+      }
+      return next;
+    });
+  };
+
   const switchToQuiz = () => {
     setSessionState("quiz");
     toast({
@@ -121,7 +133,7 @@ const Session = () => {
             <p className="mb-8 text-gray-600 max-w-md mx-auto">
               Your 50-minute session includes focus exercises and knowledge quizzes designed to improve ADHD management skills.
             </p>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="mx-auto">
               <Button 
                 onClick={startSession}
                 className="px-8 py-6 text-lg rounded-xl bg-primary hover:bg-primary/90 flex items-center justify-center gap-2"
@@ -143,7 +155,11 @@ const Session = () => {
             exit={{ opacity: 0, x: -20 }}
             className="w-full max-w-xl"
           >
-            <FocusExercise isPaused={isPaused} currentExercise={currentExercise} onComplete={() => setCurrentExercise(prev => prev + 1)} />
+            <FocusExercise 
+              isPaused={isPaused} 
+              currentExercise={currentExercise} 
+              onComplete={handleExerciseComplete} 
+            />
           </motion.div>
         );
         

@@ -100,6 +100,7 @@ const FocusExercise = ({ isPaused, currentExercise, onComplete }: FocusExerciseP
             y: Math.random() * 80 + 10
           })));
         } else {
+          // Call onComplete to signal that all exercises are done
           onComplete();
         }
       }, 2000);

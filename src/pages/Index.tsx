@@ -14,7 +14,7 @@ const Index = () => {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-center"
+          className="text-center w-full"
         >
           <motion.div 
             className="flex justify-center mb-6"
@@ -63,17 +63,18 @@ const Index = () => {
           <motion.div 
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            className="flex justify-center"
           >
             <Button 
               onClick={() => navigate('/session')}
-              className="w-full py-6 text-lg font-medium rounded-xl bg-primary text-white shadow-lg hover:shadow-xl hover:bg-primary/90 transition-all duration-300 flex items-center justify-center space-x-2"
+              className="w-full max-w-md py-6 text-lg font-medium rounded-xl bg-primary text-white shadow-lg hover:shadow-xl hover:bg-primary/90 transition-all duration-300 flex items-center justify-center space-x-2"
             >
               <span>Start Today's Session</span>
               <ChevronRight className="ml-2 h-5 w-5" />
             </Button>
           </motion.div>
 
-          <div className="grid grid-cols-2 gap-4 pt-2">
+          <div className="grid grid-cols-2 gap-4 pt-2 max-w-md mx-auto w-full">
             <motion.div 
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
